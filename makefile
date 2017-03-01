@@ -1,4 +1,4 @@
-CC = g++	#rename g++ operation..
+CC = g++	#rename g++/gcc operation..
 
 makecorepart: data.h	data.cpp	thread.h	thread.cpp	main.cpp
 				$(CC) data.cpp thread.cpp main.cpp -o main -lpthread -ldl \
