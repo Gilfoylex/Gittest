@@ -1,11 +1,11 @@
 #include "data.h"
 
-void Data::setValue(int a)
+void Data::SetValue(int a)
 {
     value = a;
 }
 
-void Data::getValue(int &a)
+void Data::GetValue(int &a)
 {
     a = value;
 }

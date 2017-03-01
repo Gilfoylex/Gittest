@@ -18,9 +18,9 @@ static void once_init()
         cout<< "pthread_key_create error";
 }
 
-void getValue(int &a)
+void GetValue(int &a)
 {
-    Data* value = pthread_getspecific(t_key);
+    Data* value = (Data*)pthread_getspecific(t_key);
     value->GetValue(a);
 }
 
@@ -99,7 +99,7 @@ void MultiThread::run()
 {
     int status;
     Data *value;
-    status = pthread_once(&once, once_routine);
+    status = pthread_once(&t_key_once, once_init);
     if(status != 0){
         cout<< "pthread_once error";
     }
@@ -109,11 +109,18 @@ void MultiThread::run()
         cout<<"malloc error";
     }
 
-    value->setValue(this->a);
+    value->SetValue(this->a);
+
+	//set setspecific
+	status = pthread_setspecific(t_key, value);
+	if(0 != status)
+	{
+		cout<<"setspecific error"<<endl;
+	}
 
     void(*entrance_func)();
     //加载动态库
-    void *pdlHandle = dlopen("libtest.so", RTLD_LAZY);
+    void *pdlHandle = dlopen("./libtest.so", RTLD_LAZY);
     //错误处理
     if(pdlHandle == NULL ) {
         cout<<"Failed load library"<<endl;
@@ -129,7 +136,7 @@ void MultiThread::run()
     }
 
     //获取函数的地址
-    pTest = dlsym(pdlHandle, "test");
+    entrance_func = (void(*)())dlsym(pdlHandle, "test");
 
     pszErr = dlerror();
 

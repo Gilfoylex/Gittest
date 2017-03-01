@@ -7,14 +7,14 @@ class Data{
 
 public:
     Data();
-    void setValue(int a);
-    void getValue(int &a);
+    void SetValue(int a);
+    void GetValue(int &a);
 
 private:
     int value;
 };
 
-void getValue(int &a);
-static Data d;
+void GetValue(int &a);
+//static Data d;
 
 #endif // BASE_H

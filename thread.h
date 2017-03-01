@@ -1,12 +1,10 @@
 #ifndef THREAD_H
 #define THREAD_H
-#include <iostream>
 #include <pthread.h>
 #include <dlfcn.h>
 #include <unistd.h>
 #include <stdlib.h>
-
-using namespace std;
+#include "data.h"
 
 class Thread
 {
