@@ -3,11 +3,13 @@
 static pthread_key_t	t_key;
 static pthread_once_t	t_key_once = PTHREAD_ONCE_INIT; 
 
+//线程特有数据的析构函数
 static void destory_key(void * value)
 {
 	free(value);
 }
 
+//线程数据的一次性初始化
 static void once_init()
 {
 	int s;
@@ -16,7 +18,7 @@ static void once_init()
 		cout<<"pthread_key_create error"<<endl;
 }
 
-
+//超时函数，实现功能号调用超时，暂未实现
 void exec_over_time(int)
 {
 	//Data * value = (Data*)pthread_getspecific(t_key);
@@ -25,6 +27,7 @@ void exec_over_time(int)
 	cout <<"this value exec over time:"<<a<<endl;
 }
 
+//功能木块获取入参的函数
 void GetValue(int &a)
 {
 	Data * value = (Data*)pthread_getspecific(t_key);
@@ -32,9 +35,7 @@ void GetValue(int &a)
 	sleep(10);
 }
 
-
-
-
+//具体的任务，根据消息里的对应信息调用对应的共享库（.so文件）
 int MyTask::run(int data)
 {
 	int suc;
@@ -55,7 +56,8 @@ int MyTask::run(int data)
 	{
 		cout<<"set pthread_setspecialfic error"<<endl;
 	}
-
+	
+	//定义一个接受模块入口函数的函数	
 	void (*exec_func)();
 	void *pdlHandle = dlopen("./libtest.so", RTLD_LAZY);
 	if(NULL == pdlHandle)
@@ -70,7 +72,8 @@ int MyTask::run(int data)
 		cout<<pszErr<<endl;
 		return -1;
 	}
-
+	
+	//获取函数
 	exec_func = (void(*)())dlsym(pdlHandle, "test");
 
 	pszErr = dlerror();
@@ -80,6 +83,8 @@ int MyTask::run(int data)
 		dlclose(pdlHandle);
 		return -1;
 	}
+	
+	//信号处理实现控制超时（未实现）	
 	signal(SIGALRM, exec_over_time);
 	alarm(5);
 	(*exec_func)();
