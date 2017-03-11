@@ -32,12 +32,12 @@ void GetValue(int &a)
 {
 	Data * value = (Data*)pthread_getspecific(t_key);
 	value->GetValue(a);
-	sleep(10);
 }
 
 //具体的任务，根据消息里的对应信息调用对应的共享库（.so文件）
-int MyTask::run(int data)
+int MyTask::run(string data)
 {
+	cout<<data<<endl;
 	int suc;
 	Data *value;
 	suc = pthread_once(&t_key_once,  once_init);
@@ -50,7 +50,7 @@ int MyTask::run(int data)
 	{
 		cout<<"malloc error"<<endl;
 	}
-	value->SetValue(data);
+	value->SetValue(3);
 	suc = pthread_setspecific(t_key, value);
 	if(0 != suc)
 	{
@@ -85,8 +85,8 @@ int MyTask::run(int data)
 	}
 	
 	//信号处理实现控制超时（未实现）	
-	signal(SIGALRM, exec_over_time);
-	alarm(5);
+	//signal(SIGALRM, exec_over_time);
+	//alarm(5);
 	(*exec_func)();
 	dlclose(pdlHandle);
 	//alarm(0);

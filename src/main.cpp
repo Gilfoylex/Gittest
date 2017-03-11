@@ -1,10 +1,13 @@
-#include "threadpool.h"
+#include "tcp_server.h"
 
 int main(int argc, char** argv)
 {
-	ThreadPool threadPool(10);
-	MyTask objMytask;
-	threadPool.addTask(std::bind(&MyTask::run, &objMytask, 3));
+	ThreadPool threadPool(1);
+	TcpServer myserver;
+	int listenport = atoi(argv[1]);
+	threadPool.addTask(std::bind(&TcpServer::run, &myserver, listenport));
+//	MyTask objMytask;
+//	threadPool.addTask(std::bind(&MyTask::run, &objMytask, "zenmehuishi"));
 
 	while(1)
 	{
@@ -15,7 +18,7 @@ int main(int argc, char** argv)
         	printf("Now I will exit from main\n"); 
         	exit(0);   
         }  
-        sleep(2);
+        sleep(600);
 	}
 	return 0;
 }

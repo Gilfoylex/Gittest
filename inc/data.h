@@ -1,6 +1,7 @@
 #ifndef DATA_H
 #define DATA_H
 #include <iostream>
+#include <string>
 using namespace std;
 
 class Data{
@@ -12,6 +13,7 @@ public:
 
 private:
     int value;
+	int client_accept_fd;
 };
 
 void GetValue(int &a);

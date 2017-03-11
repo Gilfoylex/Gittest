@@ -28,7 +28,9 @@ tcp_client::tcp_client(char* server_ip,char* server_port)
                 printf("send message error\n");  
                 exit(0);  
         }  
-  
+		char buff[6] = "12345";
+		recv(socket_fd, buff, 6, 0);
+		printf("get message %s \n",buff);
         close(socket_fd);  
         exit(0);  
   

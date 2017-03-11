@@ -12,11 +12,10 @@
 #include <dlfcn.h>	//动态加载共享库
 #include "data.h"
 
-
 class MyTask
 {
 public:
-	int run(int data); //不同的任务可以键不同的类，通过std::function<void()>将任务抽象为可执行函数
+	int run(string data); //不同的任务可以键不同的类，通过std::function<void()>将任务抽象为可执行函数
 };
 
 class ThreadPool

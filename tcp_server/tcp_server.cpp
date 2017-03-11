@@ -30,7 +30,7 @@ int tcp_server::recv_msg() {
                         throw "Accept error!";  
                         continue;  
                 }  
-                printf("Received a connection from %s\n",(char*) inet_ntoa(remote_addr.sin_addr));  
+                printf("Received a connection from %s, accept = %d\n",(char*) inet_ntoa(remote_addr.sin_addr), accept_fd);  
   
                 if( !fork() ) {  
                         char buffer[MAXSIZE];  
@@ -38,7 +38,9 @@ int tcp_server::recv_msg() {
                         if( ( read(accept_fd,buffer,MAXSIZE)) < 0 ) {  
                                 throw("Read() error!");  
                         } else {  
-                                printf("Received message: %s\n",buffer);  
+                                printf("Received message: %s\n",buffer);
+				char buff[MAXSIZE] = "sb";
+				write(accept_fd, buff, MAXSIZE);
                                 break;  
                         }  
                         exit(0);  
