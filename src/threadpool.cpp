@@ -6,7 +6,8 @@ static pthread_once_t	t_key_once = PTHREAD_ONCE_INIT;
 //线程特有数据的析构函数
 static void destory_key(void * value)
 {
-	free(value);
+	//free(value);
+	delete (MesData*)value;
 }
 
 //线程数据的一次性初始化
@@ -66,13 +67,13 @@ int MyTask::run(string message, int accept_fd)
 	cout <<message<<endl;
 	cout<<"kaishizhixing !"<<endl;
 	int suc;
-	MesData *value;
+	MesData *value = new MesData();
 	suc = pthread_once(&t_key_once,  once_init);
 	if(0 != suc)
 	{
 		cout<<"pthread_once error"<<endl;
 	}
-	value = (MesData*)malloc(sizeof(MesData));
+	//value = (MesData*)malloc(sizeof(MesData));
 	cout<<"fuzhizhiqian"<<endl;
 	if(NULL == value)
 	{
