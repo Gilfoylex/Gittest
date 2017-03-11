@@ -2,12 +2,12 @@ CC = g++	#rename g++/gcc operation..
 GDB = -g
 
 
-core: inc/data.h	inc/threadpool.h	src/threadpool.cpp	src/data.cpp	src/main.cpp	\
+core: inc/mesdata.h	inc/threadpool.h	src/threadpool.cpp	src/mesdata.cpp	src/main.cpp	\
 		inc/tcp_server.h src/tcp_server.cpp
-			$(CC) src/threadpool.cpp src/data.cpp  src/tcp_server.cpp src/main.cpp -o main -Iinc -lpthread -ldl \
+			$(CC) src/threadpool.cpp src/mesdata.cpp  src/tcp_server.cpp src/main.cpp -o main -Iinc -lpthread -ldl \
 				-Wl,--export-dynamic -std=c++0x $(GDB)
 
-lib: inc/data.h	test.cpp
+lib: inc/mesdata.h	test.cpp
 				$(CC) -c test.cpp -o test.o -fPIC -Iinc
 				$(CC) -shared -o libtest.so test.o
 clean:

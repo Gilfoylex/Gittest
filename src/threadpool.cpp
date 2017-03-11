@@ -28,29 +28,59 @@ void exec_over_time(int)
 }
 
 //功能木块获取入参的函数
-void GetValue(int &a)
+void GetValue(string &a, string paramname)
 {
-	Data * value = (Data*)pthread_getspecific(t_key);
-	value->GetValue(a);
+	MesData * value = (MesData*)pthread_getspecific(t_key);
+	value->GetValue(a, paramname);
 }
 
-//具体的任务，根据消息里的对应信息调用对应的共享库（.so文件）
-int MyTask::run(string data)
+void GetValue(int &a, string paramname)
 {
-	cout<<data<<endl;
+	MesData * value = (MesData*)pthread_getspecific(t_key);
+	value->GetValue(a, paramname);
+}
+
+void GetValue(double &a, string paramname)
+{
+	MesData * value = (MesData*)pthread_getspecific(t_key);
+	value->GetValue(a, paramname);
+}
+
+void MakeResult(string ret)
+{
+	MesData * value = (MesData*)pthread_getspecific(t_key);
+	value->CleanMapParams();
+	string writeret;
+	writeret = value->GetParams() + ret;
+	cout<< "writeret===="<<writeret<<endl;
+    const char* buffer = writeret.c_str();
+	cout << value->GetParams()<<endl;
+	cout <<"acccept_fd"<<endl;
+	write(value->GetClientFd(), buffer, 100);
+}
+
+
+//具体的任务，根据消息里的对应信息调用对应的共享库（.so文件）
+int MyTask::run(string message, int accept_fd)
+{
+	cout <<message<<endl;
+	cout<<"kaishizhixing !"<<endl;
 	int suc;
-	Data *value;
+	MesData *value;
 	suc = pthread_once(&t_key_once,  once_init);
 	if(0 != suc)
 	{
 		cout<<"pthread_once error"<<endl;
 	}
-	value = (Data*)malloc(sizeof(Data));
+	value = (MesData*)malloc(sizeof(MesData));
+	cout<<"fuzhizhiqian"<<endl;
 	if(NULL == value)
 	{
 		cout<<"malloc error"<<endl;
 	}
-	value->SetValue(3);
+	value->SetParams(message);
+	cout<<message<<endl;
+	value->SetClientFd(accept_fd);
 	suc = pthread_setspecific(t_key, value);
 	if(0 != suc)
 	{

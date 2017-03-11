@@ -5,7 +5,8 @@
 #include <iostream>  
 #include <sys/socket.h>  
 #include <arpa/inet.h>  
-#include <errno.h>  
+#include <errno.h>
+#include <string>
   
 class tcp_client  
 {  

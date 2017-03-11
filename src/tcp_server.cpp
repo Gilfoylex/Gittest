@@ -36,7 +36,7 @@ int TcpServer::run(int listenport)
 		printf("Received a connection from %s, accept = %d\n", (char*)inet_ntoa(remote_addr.sin_addr), accept_fd);
 		ClientCon.addTask(std::bind(&NetCon::run, &objnetcon, accept_fd));
 	}
-	//close(accept_fd);
+	close(accept_fd);
 	close(socket_fd);
 	return 0;
 }
@@ -59,7 +59,7 @@ int NetCon::run(int accept_fd)
 		{
 			string strMes(buffer);
 			cout<<strMes<<endl;
-			execpool.addTask(std::bind(&MyTask::run, &objMytask, strMes));
+			execpool.addTask(std::bind(&MyTask::run, &objMytask, strMes, accept_fd));
 		}
 	}
 	close(accept_fd);

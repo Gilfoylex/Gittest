@@ -1,5 +1,5 @@
 #include "tcp_client.h"  
-  
+using namespace std;
 tcp_client::tcp_client(char* server_ip,char* server_port)  
 {  
        if( (socket_fd = socket(AF_INET,SOCK_STREAM,0)) < 0 ) {  
@@ -28,9 +28,11 @@ tcp_client::tcp_client(char* server_ip,char* server_port)
                 printf("send message error\n");  
                 exit(0);  
         }  
-		char buff[6] = "12345";
-		recv(socket_fd, buff, 6, 0);
-		printf("get message %s \n",buff);
+		char buff[1024] = "12345";
+		recv(socket_fd, buff, 100, 0);
+		//printf("get message %s \n",buff);
+		string s = buff;
+		cout<<s<<endl;
         close(socket_fd);  
         exit(0);  
   

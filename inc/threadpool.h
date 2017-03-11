@@ -1,6 +1,11 @@
 #ifndef THREADPOOL_H
 #define THREADPOOL_H
 
+#include <stdio.h>
+#include <cstring>
+#include <sys/socket.h>
+#include <arpa/inet.h>
+
 #include <deque>
 #include <pthread.h>
 #include <functional>	//for std::function, std::bind
@@ -10,12 +15,12 @@
 #include <stdio.h>
 #include <signal.h>
 #include <dlfcn.h>	//动态加载共享库
-#include "data.h"
+#include "mesdata.h"
 
 class MyTask
 {
 public:
-	int run(string data); //不同的任务可以键不同的类，通过std::function<void()>将任务抽象为可执行函数
+	int run(string mesdata, int accept_fd); //不同的任务可以键不同的类，通过std::function<void()>将任务抽象为可执行函数
 };
 
 class ThreadPool
