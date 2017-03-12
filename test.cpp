@@ -10,6 +10,7 @@ void display()
 	string c = value + "----" + v;
 
 	MakeResult("c:"+ c);
+	WriteLog("helloworld!!");
 }
 
 extern "C"

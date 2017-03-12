@@ -5,6 +5,7 @@
 #include <sstream>
 #include <vector>
 #include <map>
+#include <fstream>
 
 using namespace std;
 
@@ -18,7 +19,7 @@ class MesData{
 		string LbmId;
 		map<string, string> Params;
 		map<string, string>::iterator iter;
-
+		vector<string> vLog;
 	public:
 		MesData();
 		bool SetClientFd(int clientfd);
@@ -29,6 +30,8 @@ class MesData{
 		bool SetValue(string paramname, string paramvalue);
 		bool ExistInMap(string key);
 		bool CleanMapParams();
+		void AddLog(string strLog);
+		vector<string> GetVlog();
 		int GetClientFd();
 		string GetMesId();
 		string GetUserId();
@@ -39,6 +42,16 @@ class MesData{
 		void GetValue(double &value, string paramname);
 };
 
+class Log{
+	public:
+		Log();
+		void WriteLog(vector<string> vecLog);
+	private:
+		string fileName;
+		ofstream outfile;
+};
+
+void WriteLog(string strLog);
 void GetValue(string &value, string paramname);
 void GetValue(int &value, string paramname);
 void GetValue(double &value, string paramname);

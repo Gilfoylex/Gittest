@@ -1,5 +1,7 @@
 #include "mesdata.h"
 
+Log objLog;
+
 std::vector<std::string> split(const  std::string& s, const std::string& delim)  
 {  
     std::vector<std::string> elems;  
@@ -138,3 +140,37 @@ void MesData::GetValue(double &value, string paramname)
 		strResult>>value;
 	}
 }
+
+void MesData::AddLog(string strLog)
+{
+	vLog.push_back(strLog);
+}
+
+vector<string> MesData::GetVlog()
+{
+	return vLog;
+}
+
+Log::Log()
+{
+	fileName = "debugger.log";
+	//outfile.open(fileName, ios::out);
+}
+
+void Log::WriteLog(vector<string> vecLog)
+{
+
+	if(vecLog.empty())
+		return;
+	outfile.open(fileName);
+	int i;
+	int veclen;
+	veclen = vecLog.size();
+	for(i=0;i<veclen;i++)
+	{
+		cout<<"log claass"<<vecLog.at(i)<<endl;
+		outfile<<vecLog.at(i)<<"\n";
+	}
+	outfile.close();
+}
+

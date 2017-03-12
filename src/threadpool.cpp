@@ -1,7 +1,9 @@
 #include "threadpool.h"
 
+
 static pthread_key_t	t_key;
 static pthread_once_t	t_key_once = PTHREAD_ONCE_INIT; 
+
 
 //线程特有数据的析构函数
 static void destory_key(void * value)
@@ -45,6 +47,13 @@ void GetValue(double &a, string paramname)
 {
 	MesData * value = (MesData*)pthread_getspecific(t_key);
 	value->GetValue(a, paramname);
+}
+
+void WriteLog(string str)
+{
+	MesData * value = (MesData*)pthread_getspecific(t_key);
+	value->AddLog(str);
+	cout<<str<<endl;
 }
 
 void MakeResult(string ret)
@@ -121,6 +130,8 @@ int MyTask::run(string message, int accept_fd)
 	(*exec_func)();
 	dlclose(pdlHandle);
 	//alarm(0);
+	extern Log objLog;
+	objLog.WriteLog(value->GetVlog());
 	return 0;
 }
 
