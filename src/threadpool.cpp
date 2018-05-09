@@ -30,7 +30,7 @@ void exec_over_time(int)
 	cout <<"this value exec over time:"<<a<<endl;
 }
 
-//功能木块获取入参的函数
+//功能模块获取入参的函数
 void GetValue(string &a, string paramname)
 {
 	MesData * value = (MesData*)pthread_getspecific(t_key);
